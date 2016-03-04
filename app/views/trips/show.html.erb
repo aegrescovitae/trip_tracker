@@ -1,0 +1,11 @@
+<h1><%= @trip.name %></h1>
+<h4><%= @trip.date %></h4>
+
+<% @trip.locations.each do |location|%>
+<%= link_to location.name, edit_trip_location_path(@trip, location) %>
+<% end %>
+<br />
+
+<%= link_to 'Add Location', new_trip_location_path(@trip) %>
+<%= link_to 'Edit', edit_trip_path %>
+<%= link_to 'Delete', trip_path, method: :delete, data: {confirm: 'Oh shit! Delete?'}%>

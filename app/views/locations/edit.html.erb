@@ -1,0 +1,13 @@
+<h1>Edit Location:</h1>
+
+<%= form_for [@trip, @location] do |f| %>
+  <%= f.label :name %>
+  <br />
+  <%= f.text_field :name %>
+  <br />
+
+  <%= f.submit %>
+
+<% end %>
+
+<%= link_to 'Delete', trip_location_path, method: :delete %>
