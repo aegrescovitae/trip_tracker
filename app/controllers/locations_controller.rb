@@ -1,43 +1,57 @@
 class LocationsController < ApplicationController
+  before_action :trip
+  before_action :location, only: [:show, :edit, :update, :destroy]
+  
   def index
-    @trip = Trip.find(params[:trip_id])
-    @location = @trip.locations
+    @locations = @trip.locations.all
   end
 
   def show
   end
 
   def new
-    @trip = Trip.find(params[:trip_id])
     @location = Location.new
   end
 
   def create
-    @trip = Trip.find(params[:trip_id])
-    @trip.locations.create(location_params)
-    redirect_to trip_locations_path(@trip)
+    @location = @trip.locations.new(location_params)
+    redirect_to trip_location_path(@trip, @location)
+    if @location.save
+      redirect_to trip_locations_path(@trip)
+    else
+      render :new
+    end
   end
 
   def edit
-    @trip = Trip.find(params[:trip_id])
-    @location = Location.find(params[:id])
+    
   end
 
   def update
-    @trip = Trip.find(params[:trip_id])
-    @trip.locations.find(params[:id]).update(location_params)
-    redirect_to trip_locations_path
+    if @location.update(location_params)
+      redirect_to trip_location_path(@trip, @location)
+    else
+      render :edit
+    end
   end
 
   def destroy
-    @location = Location.find(params[:id])
-    redirect_to trip_locations_path
+    @location.destroy
+    redirect_to trip_locations_path(@trip)
   end
 
   private
 
+  def trip
+    @trip = Trip.find(params[:trip_id])
+  end
+
   def location_params
-    params.require(:location).permit(:name,:trip_id)
+    params.require(:location).permit(:name)
+  end
+
+  def location
+    @location = @trip.locations.find(params[:id])
   end
 
 end

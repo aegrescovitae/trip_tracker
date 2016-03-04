@@ -1,5 +1,4 @@
 <h1>Edit Location:</h1>
-
 <%= form_for [@trip, @location] do |f| %>
   <%= f.label :name %>
   <br />
@@ -11,3 +10,4 @@
 <% end %>
 
 <%= link_to 'Delete', trip_location_path, method: :delete %>
+

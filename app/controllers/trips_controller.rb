@@ -2,7 +2,7 @@ class TripsController < ApplicationController
   before_action :trip, except: [:index, :new, :create]
 
   def index
-    @trip = Trip.all
+    @trips = Trip.all
   end
 
   def show
@@ -13,17 +13,23 @@ class TripsController < ApplicationController
   end
 
   def create
-    @trip = Trip.create(trip_params)
+    @trip = Trip.new(trip_params)
+    if @trip.save
     redirect_to trips_path
+    else
+      render :new
+    end
   end
 
   def edit
-
   end
 
   def update
-    @trip.update(trip_params)
+    if @trip.update(trip_params)
     redirect_to trip_path
+    else
+      render :edit
+    end
   end
 
   def destroy
@@ -33,12 +39,12 @@ class TripsController < ApplicationController
 
   private
 
-  def trip
-    @trip = Trip.find(params[:id])
-  end
+    def trip
+      @trip = Trip.find(params[:id])
+    end
 
-  def trip_params
-    params.require(:trip).permit(:name, :date)
-  end
+    def trip_params
+      params.require(:trip).permit(:name, :date)
+    end
 
   end
